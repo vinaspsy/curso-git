@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Course.Entities;
+using Course.Entities.Enums;
+using System;
+
 
 namespace Course
 {
@@ -8,47 +10,22 @@ namespace Course
         static void Main(string[] args)
         {
 
-            HashSet<int> A = new HashSet<int>();
-            HashSet<int> B = new HashSet<int>();
-            HashSet<int> C = new HashSet<int>();
-
-            Console.Write("O curso A possui quantos alunos? ");
-            int n = int.Parse(Console.ReadLine());
-            Console.WriteLine("Digite os códigos dos alunos do curso A:");
-
-            for (int i = 0; i < n; i++)
+            Order order = new Order
             {
-                A.Add(int.Parse(Console.ReadLine()));
-            }
+                Id = 1080,
+                Moment = DateTime.Now,
+                Status = OrderStatus.PendingPayment
+            };
 
-            Console.Write("O curso B possui quantos alunos? ");
-            n = int.Parse(Console.ReadLine());
-            Console.WriteLine("Digite os códigos dos alunos do curso B:");
+            Console.WriteLine(order);
 
-            for (int i = 0; i < n; i++)
-            {
-                B.Add(int.Parse(Console.ReadLine()));
-            }
+            string txt = OrderStatus.PendingPayment.ToString();
 
-            Console.Write("O curso C possui quantos alunos? ");
-            n = int.Parse(Console.ReadLine());
-            Console.WriteLine("Digite os códigos dos alunos do curso C:");
+            OrderStatus os = Enum.Parse<OrderStatus>("Delivered");
 
-            for (int i = 0; i < n; i++)
-            {
-                C.Add(int.Parse(Console.ReadLine()));
-            }
 
-            A.UnionWith(B);
-            A.UnionWith(C);
-
-            int count = 0;
-            foreach (int obj in A)
-            {
-                count++;
-            }
-
-            Console.WriteLine("Total de alunos: " + count);
+            Console.WriteLine(os);
+            Console.WriteLine(txt);
 
         }
     }
