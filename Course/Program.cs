@@ -12,7 +12,7 @@ namespace Course
             HashSet<int> B = new HashSet<int>();
             HashSet<int> C = new HashSet<int>();
 
-            Console.WriteLine("Boa Noite!");
+            Console.WriteLine("Bom Dia!");
 
             Console.Write("O curso A possui quantos alunos? ");
             int n = int.Parse(Console.ReadLine());
