@@ -49,26 +49,14 @@ namespace Course.Entities
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Order moment: ");
-            sb.AppendLine(Moment.ToString("dd/MM/yyyy HH:mm:ss"));
-            sb.Append("Order status: ");
-            sb.AppendLine(Status.ToString());
-            sb.Append("Client: ");
-            sb.Append(Client.Name);
-            sb.Append(" (");
-            sb.Append(Client.BirthDate.ToString("dd/MM/yyy"));
-            sb.Append(") - ");
-            sb.AppendLine(Client.Email);
+            sb.AppendLine("Order moment: " + Moment.ToString("dd/MM/yyyy HH:mm:ss"));
+            sb.AppendLine("Order status: " + Status.ToString());
+            sb.AppendLine("Client: " + Client);
             sb.AppendLine("Order items:");
             foreach(OrderItem c in Items)
             {
-                sb.Append(c.Product.Name);
-                sb.Append(", $");
-                sb.Append(c.Product.Price.ToString("F2", CultureInfo.InvariantCulture));
-                sb.Append(", Quantity: ");
-                sb.Append(c.Quantity);
-                sb.Append(", Subtotal: $");
-                sb.AppendLine(c.SubTotal().ToString("F2", CultureInfo.InvariantCulture));
+
+                sb.AppendLine(c.ToString());
        
             }
             sb.Append("Total price: $");
