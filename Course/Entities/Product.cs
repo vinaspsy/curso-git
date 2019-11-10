@@ -4,20 +4,21 @@ using System.Text;
 
 namespace Course.Entities
 {
-    class Department
+    class Product
     {
 
         public string Name { get; set; }
+        public double Price { get; set; }
 
-        public Department()
+        public Product()
         {
 
         }
 
-        public Department(string name)
+        public Product(string name, double price)
         {
             Name = name;
+            Price = price;
         }
-
     }
-}
+}   

@@ -1,7 +1,7 @@
 ﻿using Course.Entities;
-using Course.Entities.Enums;
 using System;
 using System.Globalization;
+using Course.Entities.Enums;
 
 
 namespace Course
@@ -11,45 +11,45 @@ namespace Course
         static void Main(string[] args)
         {
 
-            Console.Write("Enter department's name: ");
-            string deptName = Console.ReadLine();
-            Console.WriteLine("Enter worker data:");
+            Console.WriteLine("Enter client data:");
             Console.Write("Name: ");
             string name = Console.ReadLine();
-            Console.Write("Level (Junior/MidLevel/Senior): ");
-            WorkerLevel level = Enum.Parse<WorkerLevel>(Console.ReadLine());
-            Console.Write("Base salary: ");
-            double baseSalary = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            Console.Write("Email: ");
+            string email = Console.ReadLine();
+            Console.Write("Birth date (DD/MM/YYYY): ");
+            DateTime birthdate = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Enter order data:");
+            Console.Write("Status: ");
+            OrderStatus status = Enum.Parse<OrderStatus>(Console.ReadLine());
 
-            Department dept = new Department(deptName);
-            Worker worker = new Worker(name, level, baseSalary, dept);
+            Client client = new Client(name, email, birthdate);
+            Order order = new Order(DateTime.Now, status, client);
 
-            Console.Write("How many contracts to this worker? ");
+            Console.Write("How many items to this order? ");
             int n = int.Parse(Console.ReadLine());
-
             for(int i = 1; i <= n; i++)
             {
-                Console.WriteLine($"Enter #{i} contract data:");
-                Console.Write("Date (DD/MM/YYYY): ");
-                DateTime date = DateTime.Parse(Console.ReadLine());
-                Console.Write("Value per hour: ");
-                double valuePerHour = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                Console.Write("Duration (hours): ");
-                int hours = int.Parse(Console.ReadLine());
-                HourContract contract = new HourContract(date, valuePerHour, hours);
-                worker.AddContract(contract);
+                Console.WriteLine($"Enter #{i} item data:");
+                Console.Write("Product name: ");
+                string productName = Console.ReadLine();
+                Console.Write("Product price: ");
+                double productPrice = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                Console.Write("Quantity: ");
+                int quantity = int.Parse(Console.ReadLine());
+
+                Product product = new Product(productName, productPrice);
+                OrderItem orderItem = new OrderItem(quantity, productPrice, product);
+
+                order.AddItem(orderItem);
+
             }
 
             Console.WriteLine();
-            Console.Write("Enter month year to calculate income (MM/YYY): ");
-            string monthAndYear = Console.ReadLine();
-            int month = int.Parse(monthAndYear.Substring(0, 2));
-            int year = int.Parse(monthAndYear.Substring(3));
-            Console.WriteLine("Name: " + worker.Name);
-            Console.WriteLine("Department: " + worker.Department.Name);
-            Console.WriteLine("Income for: " + monthAndYear + ": " + worker.Income(year, month).ToString("F2", CultureInfo.InvariantCulture));
+            Console.WriteLine("ORDER SUMMARY:");
+            Console.WriteLine(order);
 
 
+            
         }
     }
 }
