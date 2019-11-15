@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Course.Entities;
-using Course.Entities.Enums;
 
 namespace Course
 {
@@ -11,40 +10,50 @@ namespace Course
         static void Main(string[] args)
         {
 
-            List<Shape> list = new List<Shape>();
+            List<TaxPayer> list = new List<TaxPayer>();
 
-            Console.Write("Enter the number of shapes: ");
+            Console.Write("Enter the number of tax payers: ");
             int n = int.Parse(Console.ReadLine());
 
-            for (int i = 1; i <= n; i++){
-                Console.WriteLine($"Shape #{i} data:");
-                Console.Write("Rectangle or Circle (r/c)? ");
+            for(int i = 1; i <= n; i++)
+            {
+                Console.WriteLine($"Tax payer #{i} data:");
+                Console.Write("Individual or company (i/c)? ");
                 char ch = char.Parse(Console.ReadLine());
-                Console.Write("Color (Black/Blue/Red): ");
-                Color color = Enum.Parse<Color>(Console.ReadLine());
-                if(ch == 'r')
+                Console.Write("Name: ");
+                string name = Console.ReadLine();
+                Console.Write("Anual income: ");
+                double anualIncome = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                if(ch == 'i')
                 {
-                    Console.Write("Width: ");
-                    double width = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                    Console.Write("Height: ");
-                    double height = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                    list.Add(new Rectangle(width, height, color));
+                    Console.Write("Health expenditures: ");
+                    double healthExpenditures = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                    list.Add(new Individual(name, anualIncome, healthExpenditures));
                 }
                 else
                 {
-                    Console.Write("Radius: ");
-                    double radius = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                    list.Add(new Circle(radius, color));
+                    Console.Write("Number of employees: ");
+                    int numberEmployees = int.Parse(Console.ReadLine());
+                    list.Add(new Company(name, anualIncome, numberEmployees));
                 }
-
             }
 
             Console.WriteLine();
-            Console.WriteLine("SHAPE AREAS:");
-            foreach (Shape shape in list)
+            Console.WriteLine("TAXES PAID:");
+
+            double totalTaxes = 0.0;
+
+            foreach(TaxPayer c in list)
             {
-                Console.WriteLine(shape.Area().ToString("F2", CultureInfo.InvariantCulture));
+                Console.WriteLine(c.Name
+                    + ": $ "
+                    + c.TaxPaid().ToString("F2", CultureInfo.InvariantCulture));
+
+                totalTaxes += c.TaxPaid();
             }
+
+            Console.WriteLine();
+            Console.WriteLine("TOTAL TAXES: $ " + totalTaxes.ToString("F2", CultureInfo.InvariantCulture));
 
         }
     }
