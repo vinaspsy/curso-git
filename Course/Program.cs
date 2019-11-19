@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Course.Entities;
+using System;
 using System.Globalization;
-using Course.Entities;
-using Course.Entities.Exceptions;
+using System.IO;
 
 namespace Course
 {
@@ -10,44 +10,40 @@ namespace Course
         static void Main(string[] args)
         {
 
+            Console.Write("Enter file full path: ");
+            string sourceFilePath = Console.ReadLine();
+
             try
             {
+                string[] lines = File.ReadAllLines(sourceFilePath);
 
-                Console.WriteLine("Enter account data");
-                Console.Write("Number: ");
-                int number = int.Parse(Console.ReadLine());
-                Console.Write("Holder: ");
-                string holder = Console.ReadLine();
-                Console.Write("Initial balance: ");
-                double initialBalance = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
-                Console.Write("Withdraw limit: ");
-                double withdrawLimit = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                string sourceFolderPath = Path.GetDirectoryName(sourceFilePath);
+                string targetFolderPath = sourceFolderPath + @"\out";
+                string targetFilePath = targetFolderPath + @"\summary.csv";
 
-                Account account = new Account(number, holder, initialBalance, withdrawLimit);
+                Directory.CreateDirectory(targetFolderPath);
 
-                Console.WriteLine();
-                Console.Write("Enter amount for withdraw: ");
-                double withdraw = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                using (StreamWriter sw = File.AppendText(targetFilePath))
+                {
+                    foreach (string line in lines)
+                    {
 
-                account.Withdraw(withdraw);
+                        string[] fields = line.Split(',');
+                        string name = fields[0];
+                        double price = double.Parse(fields[1], CultureInfo.InvariantCulture);
+                        int quantity = int.Parse(fields[2]);
 
-                Console.WriteLine();
-                Console.WriteLine("New balance: " + account.Balance.ToString("F2", CultureInfo.InvariantCulture));
+                        Product prod = new Product(name, price, quantity);
 
+                        sw.WriteLine(prod.Name + "," + prod.Total().ToString("F2", CultureInfo.InvariantCulture));
+                    }
+                }
             }
-            catch (DomainException e)
+            catch (IOException e)
             {
-                Console.WriteLine("Withdraw error: " + e.Message);
-            }
-            catch(FormatException e)
-            {
-                Console.WriteLine("Withdraw error: " + e.Message);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Withdraw error: " + e.Message);
+                Console.WriteLine("An error occurred");
+                Console.WriteLine(e.Message);
             }
         }
-
     }
 }
