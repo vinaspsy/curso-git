@@ -16,28 +16,39 @@ namespace Course
             Console.Write("Enter full file path: ");
             string path = Console.ReadLine();
 
-            List<Product> list = new List<Product>(); ;
+            List<Employee> list = new List<Employee>(); ;
 
-            using (StreamReader sr = File.OpenText(path))
+            try
             {
-                while (!sr.EndOfStream)
+
+                using (StreamReader sr = File.OpenText(path))
                 {
-                    string[] fields = sr.ReadLine().Split(',');
-                    string name = fields[0];
-                    double price = double.Parse(fields[1], CultureInfo.InvariantCulture);
-                    list.Add(new Product(name, price));
+                    while (!sr.EndOfStream)
+                    {
+                        string[] fields = sr.ReadLine().Split(',');
+                        string name = fields[0];
+                        string email = fields[1];
+                        double salary = double.Parse(fields[2], CultureInfo.InvariantCulture);
+                        list.Add(new Employee(name, email, salary));
 
+                    }
                 }
+
+                var emails = list.Where(p => p.Salary > 2000.00).OrderBy(p => p.Email).Select(p => p.Email);
+                Console.WriteLine("Email of people whose salary is more than 2000.00:");
+                foreach (string name in emails)
+                {
+                    Console.WriteLine(name);
+                }
+
+                var sumSalary = list.Where(p => p.Name[0] == 'M').Sum(p => p.Salary);
+
+                Console.WriteLine("Sum of salary of people whose name starts with 'M': " + sumSalary.ToString("F2", CultureInfo.InvariantCulture));
             }
-
-            var avg = list.Select(p => p.Price).DefaultIfEmpty(0.0).Average();
-            Console.WriteLine("Average price = " + avg.ToString("F2", CultureInfo.InvariantCulture));
-
-            var names = list.Where(p => p.Price < avg).OrderByDescending(p => p.Name).Select(p => p.Name);
-
-            foreach(string name in names)
+            catch(IOException e)
             {
-                Console.WriteLine(name);
+                Console.WriteLine("An error ocurred");
+                Console.WriteLine(e.Message);
             }
 
         }
